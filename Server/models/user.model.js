@@ -80,7 +80,11 @@ const userSchema = new mongoose.Schema(
             default: Date.now(),
         },
     },
-    { timestamps: true }
+    {
+        timestamps: true,
+        toJSON: { virtuals: true },
+        toObject: { virtuals: true },
+    }
 );
 
 //hooks pre save
@@ -115,6 +119,15 @@ userSchema.methods.getResetPasswordToken = function () {
     return resetToken;
 };
 
-userSchema.methods.getResetPasswordToken = function () {};
+userSchema.methods.updateLastActive = function () {
+    this.lstActive = Date.now();
+    return this.lstActive({ validateBeforeSave: false });
+};
+
+// virtualtype => calculated, not stored in db
+
+userSchema.virtual('totalEnrolledCourses').get(function () {
+    this.enrolledCourses.length;
+});
 
 export const User = mongoose.model('User', userSchema);
