@@ -43,14 +43,6 @@ const userSchema = new mongoose.Schema(
         },
 
         avatar: {
-            // public_id: {
-            //     type: String,
-            //     required: true,
-            // },
-            // url: {
-            //     type: String,
-            //     required: true,
-            // },
             type: String,
             default: 'default-avatar.png',
         },
@@ -90,5 +82,39 @@ const userSchema = new mongoose.Schema(
     },
     { timestamps: true }
 );
+
+//hooks pre save
+// hashing password using bcryptjs
+
+userSchema.pre('save', async function (next) {
+    if (!this.isModified('password')) {
+        // true / false
+        return next();
+    }
+
+    this.password = await bcrypt.hash(this.password, 10);
+    next();
+}); // only function not arrow function because we need to use 'this'
+
+// compare password
+
+userSchema.methods.comparePassword = async function (password) {
+    return await bcrypt.compare(password, this.password);
+};
+
+userSchema.methods.getResetPasswordToken = function () {
+    // generate token
+
+    const resetToken = crypto.randomBytes(20).toString('hex');
+    this.resetPasswordToken = crypto
+        .createHash('sha256')
+        .update(resetToken)
+        .digest('hex');
+
+    this.resetPasswordExpire = Date.now() + 30 * 60 * 1000; // 30 minutes
+    return resetToken;
+};
+
+userSchema.methods.getResetPasswordToken = function () {};
 
 export const User = mongoose.model('User', userSchema);
