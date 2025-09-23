@@ -24,7 +24,7 @@ class MongoDBConnection {
 
         mongoose.connection.on('disconnected', () => {
             console.log('MongoDB disconnected');
-            this.isConnected = false;
+            this.handleDisconnection();
         });
     }
 
@@ -80,5 +80,28 @@ class MongoDBConnection {
             console.log('Attempting to reconnect to MongoDB...');
             return this.connect();
         }
+    }
+
+    async handleTermination() {
+        try {
+            await mongoose.connection.close();
+            console.log(
+                'MongoDB connection closed due to application termination'
+            );
+            process.exit(0);
+        } catch (error) {
+            console.error('Error during MongoDB disconnection:', error.message);
+            process.exit(1);
+        }
+    }
+
+    getConnection() {
+        return {
+            isConnected: this.isConnected,
+            readyState: mongoose.connection.readyState,
+            readyState: mongoose.connection.host,
+            port: mongoose.connection.port,
+            name: mongoose.connection.name,
+        };
     }
 }
