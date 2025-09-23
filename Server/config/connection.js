@@ -26,6 +26,8 @@ class MongoDBConnection {
             console.log('MongoDB disconnected');
             this.handleDisconnection();
         });
+
+        process.on('SIGTERM', this.handleTermination.bind(this)); // signal
     }
 
     async connect() {
@@ -105,3 +107,13 @@ class MongoDBConnection {
         };
     }
 }
+
+// create singleton instance
+
+const mongoDBConnectionInstance = new MongoDBConnection();
+
+export default mongoDBConnectionInstance.connect.bind(
+    mongoDBConnectionInstance
+);
+export const getMongoDBConnectionStatus =
+    mongoDBConnectionInstance.getConnection.bind(mongoDBConnectionInstance);
