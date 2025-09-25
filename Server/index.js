@@ -68,8 +68,10 @@ app.use(
 
 // api routes
 import healthcheckRoutes from './routes/healthcheck.routes.js';
+import userRoutes from './routes/user.routes.js';
 
 app.use('/api/healthcheck', healthcheckRoutes);
+app.use('/api/v1/user', userRoutes);
 
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
