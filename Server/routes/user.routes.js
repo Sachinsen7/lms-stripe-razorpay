@@ -9,8 +9,9 @@ import {
     updateUserProfile,
 } from '../controllers/user.controllers';
 import upload from '../utils/multer';
+import { validateSignup } from '../middlewares/validation.middleware';
 
-router.post('/signup', createUserAccount);
+router.post('/signup', validateSignup, createUserAccount);
 router.post('/signin', authenticateUser);
 router.post('/signout', logoutUser);
 
