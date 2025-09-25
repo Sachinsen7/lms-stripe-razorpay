@@ -1,4 +1,4 @@
-import { ApiError, catchAsyncErrors } from './error.middlewares';
+import { ApiError, catchAsyncErrors } from './error.middlewares.js';
 import jwt from 'jsonwebtoken';
 
 export const isAuthenticated = catchAsyncErrors(async (req, res, next) => {
