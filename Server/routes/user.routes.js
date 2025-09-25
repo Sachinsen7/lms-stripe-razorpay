@@ -1,15 +1,15 @@
 import express from 'express';
 const router = express.Router();
-import { isAuthenticated } from '../middlewares/auth.middlewares';
+import { isAuthenticated } from '../middlewares/auth.middlewares.js';
 import {
     createUserAccount,
     authenticateUser,
     getCurrentUserProfile,
     logoutUser,
     updateUserProfile,
-} from '../controllers/user.controllers';
-import upload from '../utils/multer';
-import { validateSignup } from '../middlewares/validation.middleware';
+} from '../controllers/user.controllers.js';
+import upload from '../utils/multer.js';
+import { validateSignup } from '../middlewares/validation.middleware.js';
 
 router.post('/signup', validateSignup, createUserAccount);
 router.post('/signin', authenticateUser);
