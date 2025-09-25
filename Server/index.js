@@ -7,7 +7,6 @@ import mongoSanitize from 'express-mongo-sanitize';
 import hpp from 'hpp';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import connectDB from './config/connection';
 dotenv.config();
 
 const app = express();
@@ -68,6 +67,9 @@ app.use(
 );
 
 // api routes
+import healthcheckRoutes from './routes/healthcheck.routes.js';
+
+app.use('/api/healthcheck', healthcheckRoutes);
 
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
@@ -80,5 +82,3 @@ app.use((req, res) => {
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on port ${process.env.PORT}`);
 });
-
-connectDB();
