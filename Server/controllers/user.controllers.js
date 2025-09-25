@@ -1,8 +1,11 @@
-import { isAuthenticated } from '../middlewares/auth.middlewares';
-import { ApiError, catchAsyncErrors } from '../middlewares/error.middlewares';
-import { User } from '../models/user.model';
-import { generateToken } from '../utils/generateToken';
-import { deleteMediaFromCLoudinary, uploadMedia } from '../utils/cloudinary';
+import { isAuthenticated } from '../middlewares/auth.middlewares.js';
+import {
+    ApiError,
+    catchAsyncErrors,
+} from '../middlewares/error.middlewares.js';
+import { User } from '../models/user.model.js';
+import { generateToken } from '../utils/generateToken.js';
+import { deleteMediaFromCLoudinary, uploadMedia } from '../utils/cloudinary.js';
 
 export const createUserAccount = catchAsyncErrors(async (req, res) => {
     const { name, email, password, role = 'student' } = req.body;
